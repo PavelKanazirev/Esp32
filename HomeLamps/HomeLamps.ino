@@ -33,6 +33,7 @@ void setup() {
   }
 
   init_WebServer();
+  init_Lcd();
 
   // Initialize the mic
   pinMode(PIN_ADC_I, INPUT);
@@ -164,6 +165,8 @@ void loop(){
               digitalWrite(lampPins[EHOMELAMPS_ALARM_TRIGGERED], LOW);
           }
       }
+
+      update_Lcd(isLampStateOn);
     }
 
     // Clear the header variable
