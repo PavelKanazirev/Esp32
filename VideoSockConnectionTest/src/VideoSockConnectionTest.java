@@ -12,7 +12,6 @@ import com.github.sarxos.webcam.ds.ipcam.IpCamMode;
 /**
  * Example of how to stream MJPEG with Webcam Capture.
  * 
- * @author Bartosz Firyn (SarXos)
  */
 public class VideoSockConnectionTest {
 
