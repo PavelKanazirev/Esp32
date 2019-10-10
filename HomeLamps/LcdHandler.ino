@@ -20,44 +20,49 @@ void init_Lcd()
 
 void update_Lcd(bool _isLampStateOn[] )
 {
+    lcd.clear();
     lcd.setCursor(0, 0);
     // print message
-    lcd.print("Active : ");
+    lcd.print("Active:");
     for ( unsigned int index = EHOMELAMPS_MIN; index < EHOMELAMPS_MAX ; index++ )
     {
-        if ( true == _isLampStateOn[index] )
+        if ( true == _isLampStateOn[EHOMELAMPS_KITCHEN] )
         {
-            switch (index) {
-/*              
- *                 EHOMELAMPS_KITCHEN = EHOMELAMPS_MIN,
-  EHOMELAMPS_BEDROOM,
-  EHOMELAMPS_LIVINGROOM,
-  EHOMELAMPS_CORRIDOR,
-  EHOMELAMPS_ALARM_ACTIVE,
-  EHOMELAMPS_ALARM_TRIGGERED,
- */
-              case EHOMELAMPS_KITCHEN:
-                break;
-              default:
-                lcd.print("Error");
-            }
-          
+            Serial.println("lcd:K");
+            lcd.setCursor(8, 0);
+            lcd.print(" K");
         }
+        if ( true == _isLampStateOn[EHOMELAMPS_BEDROOM] )
+        {
+            Serial.println("lcd:B");
+            lcd.setCursor(10, 0);
+            lcd.print(" B");
+        }
+        if ( true == _isLampStateOn[EHOMELAMPS_LIVINGROOM] )
+        {
+            Serial.println("lcd:L");
+            lcd.setCursor(12, 0);
+            lcd.print(" L");
+        }
+        if ( true == _isLampStateOn[EHOMELAMPS_CORRIDOR] )
+        {
+            Serial.println("lcd:C");
+            lcd.setCursor(14, 0);
+            lcd.print(" C");
+        }        
     }    
     // set cursor to first column, second row
     lcd.setCursor(0,1);
     lcd.print("Alarm:");
     
-
-    if ( true == _isLampStateOn[EHOMELAMPS_ALARM_ACTIVE] )
-    {
-      lcd.print("Active");
-    }
-
     if (true == _isLampStateOn[EHOMELAMPS_ALARM_TRIGGERED] )
     {
-      lcd.print("Trig");
+      Serial.println("lcd:T");
+      lcd.print("Triggered");
     }
-
-
+    else if ( true == _isLampStateOn[EHOMELAMPS_ALARM_ACTIVE] )
+    {
+      Serial.println("lcd:A");
+      lcd.print("Active");
+    }
 }

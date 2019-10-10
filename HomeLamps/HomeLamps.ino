@@ -34,12 +34,14 @@ void setup() {
 
   init_WebServer();
   init_Lcd();
+  update_Lcd(isLampStateOn); // once
 
   // Initialize the mic
   pinMode(PIN_ADC_I, INPUT);
 }
 
 void loop(){
+  bool change_detected = false;
   WiFiClient client = getWebClient();
 
   if (client) {                             // If a new client connects,
@@ -73,6 +75,7 @@ void loop(){
                    digitalWrite(lampPins[index], HIGH);
                    isLampStateOn[index] = true;
                    strOutputState[index] = "on";
+                   change_detected = true;
                 }
                 searchOnString = String("");
                 
@@ -85,6 +88,7 @@ void loop(){
                    digitalWrite(lampPins[index], LOW);
                    isLampStateOn[index] = false;
                    strOutputState[index] = "off";
+                   change_detected = true;
                 }
                 searchOffString = String("");              
             }
@@ -165,8 +169,6 @@ void loop(){
               digitalWrite(lampPins[EHOMELAMPS_ALARM_TRIGGERED], LOW);
           }
       }
-
-      update_Lcd(isLampStateOn);
     }
 
     // Clear the header variable
@@ -175,5 +177,11 @@ void loop(){
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
+  }
+
+  if (true == change_detected)
+  {
+      Serial.println("lcd:Change");
+      update_Lcd(isLampStateOn);
   }
 }
