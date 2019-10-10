@@ -36,8 +36,21 @@ char auth[] = "";
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-const char* ssid     = "";
+const char* ssid = "";
 const char* pass = "";
+
+
+int temp_threshold = 50;
+BLYNK_WRITE(V3)
+{
+  temp_threshold = param.asInt(); // Get value as integer
+}
+
+int humidity_threshold = 50;
+BLYNK_WRITE(V2)
+{
+  humidity_threshold = param.asInt(); // Get value as integer
+}
 
 BlynkTimer timer;
 
@@ -46,9 +59,6 @@ BlynkTimer timer;
 // that you define how often to send data to Blynk App.
 void myTimerEvent()
 {
-  // You can send any value at any time.
-  // Please don't send more that 10 values per second.
-  //Blynk.virtualWrite(V5, millis() / 1000);
   dht.begin();
   float h = dht.readHumidity();
   float t = dht.readTemperature();  
@@ -57,6 +67,11 @@ void myTimerEvent()
   Blynk.virtualWrite(V5, h);
   delay(100);
   update_Lcd(isLampStateOn, t, h);
+
+  if ( ( t > temp_threshold ) || (h > humidity_threshold))
+  {
+      digitalWrite(lampPins[EHOMELAMPS_ALARM_TRIGGERED], HIGH);
+  }
 }
 
 void setup() {  
